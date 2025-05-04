@@ -5,6 +5,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
 import { Check, ChevronsUpDown, Loader2, Search } from "lucide-react";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 interface Show {
     id: string;
@@ -24,20 +26,21 @@ interface Episode {
     title: string;
     rate: number;
     votes: number;
+    formatted_title: string;
 }
 
 function SeasonsList({ show, items, onSelectSeason }: { show: Show; items: Array<Season>; onSelectSeason: (season: Season) => void }) {
     return (
-        <div>
-            <h2>
+        <div className="my-6">
+            <h2 className="text-lg font-medium">
                 {show.title} ({show.original_title})
             </h2>
-            <h3>
+            <h3 className="text-base">
                 {show.start_year} - {show.end_year}
             </h3>
-            <ul className="p-1 text-sm mt-6">
+            <ul className="text-sm mt-6">
                 {items.map((season, index) => (
-                    <li key={index} className="flex px-2 py-1 hover:bg-light-gray">
+                    <li key={index} className="flex py-1 hover:bg-light-gray font-semibold">
                         <a
                             href="#"
                             onClick={(e) => {
@@ -45,9 +48,10 @@ function SeasonsList({ show, items, onSelectSeason }: { show: Show; items: Array
                                 onSelectSeason(season);
                             }}
                             className="hover:underline">
-                            Stagione {season.season}
+                            <span>Stagione {season.season}</span>
                         </a>
-                        <span className="text-light-gray">({season.episodes} episodes)</span>
+                        &nbsp;
+                        <span className="text-light-gray font-normal">({season.episodes} episodes)</span>
                     </li>
                 ))}
             </ul>
@@ -65,20 +69,50 @@ function EpisodesList({ items, loading }: { items: Array<Episode>; loading: bool
         );
     }
 
-    if (items.length === 0) {
+    if (items && items.length === 0) {
         return <div className="mt-4 text-muted-foreground italic">Nessun episodio trovato per questa stagione.</div>;
     }
 
+    const chartConfig = {
+        rate: {
+            label: "Episodio",
+            color: "hsl(var(--chart-1))",
+        },
+        label: {
+            color: "hsl(var(--background))",
+        },
+    } satisfies ChartConfig;
+
     return (
-        <ul className="p-1 text-sm mt-6">
-            {items.map((episode, index) => (
-                <li key={index} className="flex px-2 py-1 hover:bg-light-gray">
-                    <a href="#">
-                        Episodio {episode.num}: {episode.title}. Rate: {episode.rate} ({episode.votes} votes).
-                    </a>
-                </li>
-            ))}
-        </ul>
+        <div className="w-[700px]">
+            {/* <ul className="p-1 text-sm mt-6">
+                {items.map((episode, index) => (
+                    <li key={index} className="flex px-2 py-1 hover:bg-light-gray">
+                        <a href="#">
+                            Episodio {episode.num}: {episode.title}. Rate: {episode.rate} ({episode.votes} votes).
+                        </a>
+                    </li>
+                ))}
+            </ul> */}
+            <ChartContainer config={chartConfig}>
+                <BarChart
+                    accessibilityLayer
+                    data={items}
+                    layout="vertical"
+                    margin={{
+                        right: 16,
+                    }}>
+                    <CartesianGrid horizontal={false} />
+                    <YAxis dataKey="title" type="category" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 3)} hide />
+                    <XAxis dataKey="rate" type="number" hide />
+                    <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+                    <Bar dataKey="rate" layout="vertical" fill="var(--color-label)" radius={4}>
+                        <LabelList dataKey="formatted_title" position="insideLeft" offset={8} className="fill-[--color-label]" fontSize={12} />
+                        <LabelList dataKey="rate" position="right" offset={8} className="fill-foreground" fontSize={12} />
+                    </Bar>
+                </BarChart>
+            </ChartContainer>
+        </div>
     );
 }
 
@@ -119,7 +153,7 @@ function App() {
                     .finally(() => {
                         setLoading(false);
                     });
-            }, 300); // debounce di 300ms
+            }, 1000); // debounce di 300ms
 
             return () => clearTimeout(delayDebounce);
         } else {
@@ -158,6 +192,7 @@ function App() {
                     title: item.title,
                     rate: item.rate,
                     votes: item.votes,
+                    formatted_title: item.episode + " " + item.title,
                 }));
                 setEpisodes(results);
             })
@@ -171,11 +206,11 @@ function App() {
     }
 
     return (
-        <div>
+        <div className="p-6">
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button variant="outline" role="combobox" aria-expanded={open} className="w-[200px] justify-between">
-                        {selectedShow ? selectedShow.title : "Seleziona serie..."}
+                        {selectedShow ? selectedShow.title : "Search show..."}
                         <ChevronsUpDown className="opacity-50" />
                     </Button>
                 </PopoverTrigger>

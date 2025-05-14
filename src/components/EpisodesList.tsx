@@ -1,4 +1,4 @@
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, Tooltip, YAxis, ResponsiveContainer } from "recharts";
+/* import { Bar, BarChart, CartesianGrid, LabelList, XAxis, Tooltip, YAxis, ResponsiveContainer } from "recharts";
 import { ChartConfig, ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import { motion } from "motion/react";
 
@@ -56,3 +56,4 @@ function EpisodesList({ items, loading }: { items: Array<Episode>; loading: bool
 }
 
 export default EpisodesList;
+ */

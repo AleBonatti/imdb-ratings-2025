@@ -5,14 +5,14 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
 import { Check, ChevronsUpDown, Loader2, Search } from "lucide-react";
-//import { Bar, BarChart, CartesianGrid, LabelList, XAxis, Tooltip, YAxis, ResponsiveContainer } from "recharts";
-//import { ChartConfig, ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
-import { Badge } from "@/components/ui/badge";
-//import { motion } from "motion/react";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, Tooltip, YAxis, ResponsiveContainer } from "recharts";
+import { ChartConfig, ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
+//import { Badge } from "@/components/ui/badge";
+import { motion } from "motion/react";
 
 import Header from "./components/Header";
 //import SearchBar from "./components/SearchBar";
-//import SeasonsList from "./components/SeasonsList";
+import SeasonsList from "@/components/SeasonsList";
 //import EpisodesList from "./components/EpisodesList";
 
 interface Show {
@@ -187,7 +187,7 @@ function App() {
 }
 
 /* Lista Stagioni */
-function SeasonsList({ show, items, onSelectSeason, loading }: { show: Show; items: Array<Season>; onSelectSeason: (season: Season) => void; loading: boolean }) {
+/* function SeasonsList({ show, items, onSelectSeason, loading }: { show: Show; items: Array<Season>; onSelectSeason: (season: Season) => void; loading: boolean }) {
     if (loading) {
         return (
             <div className="flex items-center gap-2 mt-4 text-muted-foreground">
@@ -218,14 +218,13 @@ function SeasonsList({ show, items, onSelectSeason, loading }: { show: Show; ite
                             <span>Stagione {season.season}</span>
                         </a>
                         &nbsp;
-                        {/* <span className="text-light-gray font-normal">({season.episodes} episodes)</span> */}
                         <Badge variant="secondary">{season.episodes} episodi</Badge>
                     </li>
                 ))}
             </ul>
         </div>
     );
-}
+} */
 
 /* Lista Episodi */
 function EpisodesList({ items, loading }: { items: Array<Episode>; loading: boolean }) {

@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 function Header() {
     return (
         <header className="w-full bg-card border-b shadow-sm">

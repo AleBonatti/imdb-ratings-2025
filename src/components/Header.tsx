@@ -5,7 +5,7 @@ function Header() {
                 <div className="flex items-center space-x-3">
                     {/* <div className="text-2xl">📊🍿</div>
                         <span className="text-lg font-bold tracking-tight">BingeScore</span> */}
-                    <img src="/public/logo-small.png" />
+                    <img src="/logo-small.png" />
                 </div>
                 {/* <motion.div className="flex items-center space-x-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                     <img src="/public/logo-small.png" alt="BingeScore Logo" className="w-8 h-8" />

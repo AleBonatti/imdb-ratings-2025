@@ -1,8 +1,14 @@
-/* import { Bar, BarChart, CartesianGrid, LabelList, XAxis, Tooltip, YAxis, ResponsiveContainer } from "recharts";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, Tooltip, YAxis, ResponsiveContainer } from "recharts";
 import { ChartConfig, ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import { motion } from "motion/react";
+import { Episode } from "@/types";
 
-function EpisodesList({ items, loading }: { items: Array<Episode>; loading: boolean }) {
+interface EpisodesProps {
+    items: Array<Episode>;
+    loading: boolean;
+}
+
+export default function EpisodesList({ items, loading }: EpisodesProps) {
     if (loading) {
         return (
             <div className="flex items-center gap-2 mt-4 text-muted-foreground">
@@ -54,6 +60,3 @@ function EpisodesList({ items, loading }: { items: Array<Episode>; loading: bool
         </div>
     );
 }
-
-export default EpisodesList;
- */

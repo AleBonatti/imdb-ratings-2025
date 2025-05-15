@@ -4,11 +4,11 @@ import { Loader2 } from "lucide-react";
 
 interface SeasonsListProps {
     seasons: Array<Season>;
-    onSelectSeason: (season: Season) => void;
+    onSeasonClick: (season: Season) => void;
     loading: boolean;
 }
 
-function SeasonsList({ seasons, onSelectSeason, loading }: SeasonsListProps) {
+function SeasonsList({ seasons, onSeasonClick, loading }: SeasonsListProps) {
     if (loading) {
         return (
             <div className="flex items-center gap-2 mt-4 text-muted-foreground">
@@ -26,7 +26,7 @@ function SeasonsList({ seasons, onSelectSeason, loading }: SeasonsListProps) {
                         href="#"
                         onClick={(e) => {
                             e.preventDefault();
-                            onSelectSeason(season);
+                            onSeasonClick(season);
                         }}
                         className="hover:underline font-semibold">
                         <span>Stagione {season.season}</span>

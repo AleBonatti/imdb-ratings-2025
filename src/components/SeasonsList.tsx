@@ -19,9 +19,9 @@ function SeasonsList({ seasons, onSeasonClick, loading }: SeasonsListProps) {
     }
 
     return (
-        <ul className="text-sm mt-6 space-y-3">
+        <ul className="text-sm mt-6 space-y-2">
             {seasons.map((season, index) => (
-                <li key={index} className="flex justify-between items-center py-2 px-3 rounded-xl cursor-pointer transition-colors duration-200 hover:bg-muted shadow-sm border">
+                <li key={index} className="flex justify-between items-center py-2 px-3 rounded-sm cursor-pointer transition-colors duration-200 hover:bg-muted shadow-xs border">
                     <a
                         href="#"
                         onClick={(e) => {

@@ -16,6 +16,7 @@ function App() {
     const [shows, setShows] = useState<Show[]>([]);
     const [showsLoading, setShowsLoading] = useState(false);
     const [selectedShow, setSelectedShow] = useState<Show | null>(null);
+    const [selectedSeason, setSelectedSeason] = useState<Season | null>(null);
     // stagioni
     const [seasons, setSeasons] = useState<Season[]>([]);
     const [seasonsLoading, setSeasonsLoading] = useState(false);
@@ -28,7 +29,7 @@ function App() {
     }
 
     useEffect(() => {
-        if (query) {
+        if (query.length > 2) {
             setShowsLoading(true);
 
             const delayDebounce = setTimeout(() => {
@@ -51,13 +52,14 @@ function App() {
         e.preventDefault();
 
         setSelectedShow(item);
-        setSeasons([]);
+        if (seasons.length > 0) setSeasons([]);
         setSeasonsLoading(true);
+        if (episodes.length > 0) setEpisodes([]);
+        setOpen(false);
 
         fetchSeasons(item.id)
             .then((res) => {
                 setSeasons(res);
-                setOpen(false);
             })
             .catch((err) => {
                 console.error(err);
@@ -70,6 +72,7 @@ function App() {
 
         setEpisodes([]);
         setEpisodesLoading(true);
+        setSelectedSeason(season);
 
         fetchRating(selectedShow.id, season.season)
             .then(setEpisodes)
@@ -84,12 +87,12 @@ function App() {
             <Header />
             <div className="flex justify-center px-4">
                 <div className="p-6 max-w-6xl w-full space-y-6">
-                    <SearchBar query={query} onSearchInput={handleSearchInputChange} open={open} setOpen={setOpen} shows={shows} selectedShow={selectedShow} onShowSelect={handleShowSelect} loading={showsLoading} />
                     {/* Due colonne (Stagioni + Episodi) */}
-                    {selectedShow && (
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div className="rounded-2xl border p-4 shadow-sm">
-                                <div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div className="space-y-6">
+                            <SearchBar query={query} onSearchInput={handleSearchInputChange} open={open} setOpen={setOpen} shows={shows} selectedShow={selectedShow} onShowSelect={handleShowSelect} loading={showsLoading} />
+                            {selectedShow && (
+                                <div className="rounded-2xl border p-4">
                                     <h2 className="text-lg">
                                         <span className="font-semibold">{selectedShow.title}</span>
                                         {selectedShow.title !== selectedShow.original_title && <span>(orig. {selectedShow.original_title})</span>}
@@ -99,13 +102,10 @@ function App() {
                                     </h3>
                                     <SeasonsList seasons={seasons} onSeasonClick={handleSeasonClick} loading={seasonsLoading} />
                                 </div>
-                            </div>
-                            <div>
-                                {/* <h2 className="text-base">epi</h2> */}
-                                <EpisodesList items={episodes} loading={episodesLoading} />
-                            </div>
+                            )}
                         </div>
-                    )}
+                        <div>{selectedSeason && <EpisodesList items={episodes} season={selectedSeason} loading={episodesLoading} />}</div>
+                    </div>
                 </div>
             </div>
         </div>

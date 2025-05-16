@@ -1,3 +1,4 @@
+import { Github } from "lucide-react";
 function Header() {
     return (
         <header className="w-full bg-card border-b shadow-sm">
@@ -13,13 +14,13 @@ function Header() {
                 </motion.div> */}
                 <nav className="hidden md:flex space-x-6 text-sm font-medium text-muted-foreground">
                     <a href="#" className="hover:text-foreground transition-colors duration-200">
-                        Home
+                        Disclaimer
                     </a>
                     <a href="#" className="hover:text-foreground transition-colors duration-200">
-                        Preferiti
+                        Info
                     </a>
-                    <a href="#" className="hover:text-foreground transition-colors duration-200">
-                        Contatti
+                    <a href="https://github.com/AleBonatti/imdb-episode-rating" className="hover:text-foreground transition-colors duration-200">
+                        <Github className="h-5 w-5" />
                     </a>
                 </nav>
             </div>

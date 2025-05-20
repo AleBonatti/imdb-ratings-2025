@@ -50,7 +50,7 @@ export default function SearchBar({ query, onSearchInput, open, setOpen, shows, 
                 {!loading && query.length > 1 && shows.length === 0 && <div className="p-3 text-center text-xs italic text-primary">Nessun risultato trovato per "{query}"</div>}
 
                 {shows.length > 0 && (
-                    <ul className="p-1 text-sm">
+                    <ul className="p-1 text-sm max-h-[450px] overflow-auto">
                         {shows.map((show) => (
                             <li key={show.id} onClick={(e) => onShowSelect(e, show)} className="flex px-4 py-2 hover:bg-secondary cursor-pointer transition-colors duration-200">
                                 <div className="flex flex-col">

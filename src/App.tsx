@@ -31,6 +31,7 @@ function App() {
     useEffect(() => {
         if (query.length > 2) {
             setShowsLoading(true);
+            if (selectedSeason !== null) setSelectedSeason(null);
 
             const delayDebounce = setTimeout(() => {
                 fetchShows(query)
@@ -50,6 +51,7 @@ function App() {
 
     function handleShowSelect(e: React.MouseEvent<HTMLLIElement>, item: Show): void {
         e.preventDefault();
+        if (selectedSeason !== null) setSelectedSeason(null);
 
         setSelectedShow(item);
         if (seasons.length > 0) setSeasons([]);
@@ -92,7 +94,7 @@ function App() {
                         <div className="space-y-6">
                             <SearchBar query={query} onSearchInput={handleSearchInputChange} open={open} setOpen={setOpen} shows={shows} selectedShow={selectedShow} onShowSelect={handleShowSelect} loading={showsLoading} />
                             {selectedShow && (
-                                <div className="rounded-2xl border p-4">
+                                <div className="rounded-2xl border p-6">
                                     <h2 className="text-lg">
                                         <span className="font-semibold">{selectedShow.title}</span>
                                         {selectedShow.title !== selectedShow.original_title && <span>(orig. {selectedShow.original_title})</span>}

@@ -26,6 +26,7 @@ export async function fetchSeasons(showId: string): Promise<Season[]> {
         })
     );
 }
+
 export async function fetchRating(showId: string, seasonNumber: string): Promise<Episode[]> {
     const res = await api.get(`/ratings/${showId}?season=${seasonNumber}`);
 

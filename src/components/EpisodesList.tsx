@@ -6,29 +6,17 @@ import { Loader2 } from "lucide-react";
 
 interface EpisodesProps {
     items: Array<Episode>;
-    season: Season | null;
+    season: Season;
     loading: boolean;
 }
 
+/* function getAverageRating(episodes: Episode[]) {
+    if (episodes.length === 0) return null;
+    const total = episodes.reduce((sum, ep) => sum + ep.rate, 0);
+    return (total / episodes.length).toFixed(2);
+} */
+
 export default function EpisodesList({ items, season, loading }: EpisodesProps) {
-    if (loading) {
-        return (
-            <div className="flex items-center gap-2 mt-4 text-muted-foreground justify-center text-sm">
-                {/* <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1.5 }}>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v4m0 8v4m8-8h-4m-8 0H4" />
-                    </svg>
-                </motion.div> */}
-                <Loader2 className="ml-2 size-4 animate-spin text-muted-foreground" />
-                Caricamento episodi...
-            </div>
-        );
-    }
-
-    if (season !== null && items && items.length === 0) {
-        return <div className="mt-4 text-muted-foreground italic">Nessun episodio trovato per questa stagione.</div>;
-    }
-
     const chartConfig = {
         rate: {
             label: "Punteggio",
@@ -39,9 +27,32 @@ export default function EpisodesList({ items, season, loading }: EpisodesProps) 
         },
     } satisfies ChartConfig;
 
+    const getAverageRating = (episodes: Episode[]) => {
+        if (episodes.length === 0) return null;
+        const total = episodes.reduce((sum, ep) => {
+            // console.log(typeof ep.rate, ep.rate);
+            return sum + parseFloat(ep.rate);
+        }, 0);
+        return (total / episodes.length).toFixed(2);
+    };
+
+    const averageRating = getAverageRating(items);
+
     return (
         <div>
-            {season && <h2>Stagione {season.season}</h2>}
+            <h2 className="flex items-bottom justify-between">
+                Stagione {season.season}
+                {averageRating && (
+                    <div className="text-xs">
+                        Media voto: {season?.season}: <span className="text-primary">{averageRating}</span>
+                    </div>
+                )}
+            </h2>
+
+            {season !== null && !loading && items && items.length === 0 && <div className="mt-4 text-muted-foreground italic">Nessun episodio trovato per questa stagione.</div>}
+
+            {loading && <Waiter />}
+
             <ChartContainer config={chartConfig} className="mt-4 h-[450px] w-full">
                 <ResponsiveContainer>
                     <BarChart
@@ -62,6 +73,20 @@ export default function EpisodesList({ items, season, loading }: EpisodesProps) 
                     </BarChart>
                 </ResponsiveContainer>
             </ChartContainer>
+        </div>
+    );
+}
+
+function Waiter() {
+    return (
+        <div className="flex items-center gap-2 mt-4 text-muted-foreground justify-center text-sm">
+            {/* <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1.5 }}>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v4m0 8v4m8-8h-4m-8 0H4" />
+                    </svg>
+                </motion.div> */}
+            <Loader2 className="ml-2 size-4 animate-spin text-muted-foreground" />
+            Caricamento episodi...
         </div>
     );
 }
